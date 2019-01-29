@@ -1,2 +1,2 @@
-# hyped-text-app
+# app
 Frontend application
