@@ -162,35 +162,25 @@ module.exports = (env = defaultEnv) => {
           ].filter(Boolean),
           sideEffects: true,
         },
-        // {
-        //   test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
-        //   loader: require.resolve('url-loader'),
-        //   options: {
-        //     limit: 10000,
-        //     name: 'static/media/[name].[hash:8].[ext]',
-        //   },
-        // },
-        // {
-        //   loader: require.resolve('file-loader'),
-        //   exclude: [/\.(js|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/],
-        //   options: {
-        //     name: 'static/media/[name].[hash:8].[ext]',
-        //   },
-        // },
+        {
+          test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
+          loader: require.resolve('url-loader'),
+          options: {
+            limit: 10000,
+            name: 'static/media/[name].[hash:8].[ext]',
+          },
+        },
       ],
     },
     plugins: [
       new HtmlWebpackPlugin({
-        title: 'Custom template using Handlebars',
+        title: config.get('APP_TITLE'),
         template: path.resolve('src', 'index.ejs'),
       }),
       new ModuleNotFoundPlugin('.'),
-      new webpack.DefinePlugin({
-        process: {
-          env: JSON.stringify({
-            API_URL: process.env.API_URL,
-          }),
-        },
+      new webpack.EnvironmentPlugin({
+        NODE_ENV: process.env.NODE_ENV,
+        API_URL: config.get('API_URL'),
       }),
       isEnvDevelopment && new webpack.HotModuleReplacementPlugin(),
       isEnvDevelopment && new CaseSensitivePathsPlugin(),
