@@ -1,0 +1,89 @@
+enum DataSource {
+  GUTENBERG
+  DBPEDIA
+  KATALOGOC
+}
+
+enum Operation {
+  eq
+}
+
+input QueryOptions {
+  limit: Int = 100
+  offset: Int = 0
+}
+
+type Author {
+  id: ID
+  xid: ID
+  source: DataSource
+  birthdate: String
+  deathdate: String
+  name: String
+  alias: [String!]!
+  texts: [Text!]!
+  thumbnail: String
+}
+
+enum AuthorIndexedField {
+  xid
+  source
+  name
+}
+
+input AuthorFilterOperation {
+  type: Operation!
+  field: AuthorIndexedField!
+  value: String!
+}
+
+input AuthorFilterInput {
+  operations: [AuthorFilterOperation!]!
+}
+
+type Text {
+  id: ID!
+  xid: ID
+  source: DataSource
+  url: String
+  title: String
+  authors: [Author!]
+  subject: [String!]
+}
+
+type Query {
+  author(id: ID!): Author
+  searchAuthorByName(name: String): Author
+  authors(filter: AuthorFilterInput, options: QueryOptions): [Author!]!
+  texts(options: QueryOptions): [Text!]!
+  text(id: ID!): Text
+}
+
+input SaveAuthorInput {
+  id: ID
+  xid: ID
+  source: DataSource
+  name: String
+  alias: [String!]!
+  texts: [String!]!
+  birthdate: String
+  deathdate: String
+  thumbnail: String
+}
+
+input SaveTextInput {
+  id: ID
+  xid: ID
+  source: DataSource
+  title: String
+  url: String!
+  authors: [String!]!
+  subject: [String!]!
+}
+
+type Mutation {
+  saveText(text: SaveTextInput!): ID!
+  saveAuthor(author: SaveAuthorInput!): ID!
+  deleteTexts(ids: [ID!]!): [ID!]!
+  deleteAuthors(ids: [ID!]!): [ID!]!
+}

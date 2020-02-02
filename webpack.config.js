@@ -33,7 +33,7 @@ module.exports = (env = defaultEnv) => {
     bail: isEnvProduction,
     // eslint-disable-next-line no-nested-ternary
     devtool: isEnvProduction ? (shouldUseSourceMap ? 'source-map' : false) : isEnvDevelopment && 'eval-source-map',
-    entry: [isEnvDevelopment && require.resolve('react-dev-utils/webpackHotDevClient'), './src/index.jsx'].filter(
+    entry: [isEnvDevelopment && require.resolve('react-dev-utils/webpackHotDevClient'), './src/index.tsx'].filter(
       Boolean
     ),
     output: {
@@ -57,6 +57,9 @@ module.exports = (env = defaultEnv) => {
       historyApiFallback: true,
     },
     optimization: {
+      splitChunks: {
+        chunks: 'all',
+      },
       minimize: isEnvProduction,
       minimizer: [
         new TerserPlugin({
@@ -98,30 +101,27 @@ module.exports = (env = defaultEnv) => {
     },
     resolve: {
       plugins: [PnpWebpackPlugin, new ModuleScopePlugin('./src', ['./package.json'])],
-      extensions: ['*', '.mjs', '.js', '.jsx', '.vue', '.json', '.gql', '.graphql'],
+      extensions: ['*', '.mjs', '.js', '.jsx', '.ts', '.tsx', '.vue', '.json', '.gql', '.graphql'],
     },
-    // resolveLoader: {
-    //   plugins: [PnpWebpackPlugin.moduleLoader(module)],
-    // },
     module: {
       strictExportPresence: true,
       rules: [
-        // Disable require.ensure as it's not a standard language feature.
         { parser: { requireEnsure: false } },
+        {
+          enforce: 'pre',
+          test: /\.js$/,
+          loader: 'source-map-loader',
+        },
         {
           test: /\.mjs$/,
           include: /node_modules/,
           type: 'javascript/auto',
         },
         {
-          test: /\.(js|jsx|mjs)$/,
+          test: /\.(js|jsx|mjs|ts|tsx)$/,
           exclude: /(node_modules|bower_components)/,
           use: {
-            loader: 'babel-loader',
-            options: {
-              presets: ['@babel/preset-env'],
-              plugins: ['@babel/plugin-transform-runtime', 'react-hot-loader/babel'],
-            },
+            loader: 'babel-loader'
           },
         },
         {
@@ -130,7 +130,7 @@ module.exports = (env = defaultEnv) => {
             isEnvDevelopment && require.resolve('style-loader'),
             isEnvProduction && {
               loader: MiniCssExtractPlugin.loader,
-              options: Object.assign({}, { publicPath: '../../' }),
+              options: { publicPath: '../../' },
             },
             {
               loader: require.resolve('css-loader'),
@@ -199,13 +199,14 @@ module.exports = (env = defaultEnv) => {
         new WorkboxWebpackPlugin.GenerateSW({
           clientsClaim: true,
           exclude: [/\.map$/, /asset-manifest\.json$/],
-          importWorkboxFrom: 'cdn',
           navigateFallback: '/index.html',
-          navigateFallbackBlacklist: [new RegExp('^/_'), new RegExp('/[^/]+\\.[^/]+$')],
+          navigateFallbackDenylist: [new RegExp('^/_'), new RegExp('/[^/]+\\.[^/]+$')],
         }),
     ].filter(Boolean),
     performance: {
       hints: isEnvProduction ? 'warning' : false,
+      maxEntrypointSize: 400000,
+      maxAssetSize: 400000,
     },
   };
 };

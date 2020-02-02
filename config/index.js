@@ -5,4 +5,4 @@ const path = require('path');
 module.exports = nconf
   .env()
   .argv()
-  .file({ file: path.join(__dirname, './config.json') })
+  .file({ file: path.join(__dirname, './config.json') });

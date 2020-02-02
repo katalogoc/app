@@ -1,0 +1,7 @@
+overwrite: true
+schema: "http://localhost:8082/api"
+documents: null
+generates:
+  src/types/graphql.ts:
+    plugins:
+      - "typescript"
