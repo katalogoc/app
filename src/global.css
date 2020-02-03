@@ -1,0 +1,8 @@
+:global * {
+  font-family: monospace;
+}
+
+:global :root {
+  --link-color: rgb(85, 26, 139);
+  --main-width: 1024px;
+}

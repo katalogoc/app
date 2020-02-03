@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash d09547731dafe471e2b7e2b185af64b4
+ * @relayHash 6ce65b8f61e2eb1dd8fff1186aa19f4d
  */
 
 /* eslint-disable */
@@ -9,31 +9,37 @@
 
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
-export type GetAuthorsQueryVariables = {||};
-export type GetAuthorsQueryResponse = {|
-  +authors: $ReadOnlyArray<{|
+export type GetAuthorQueryVariables = {|
+  id: string
+|};
+export type GetAuthorQueryResponse = {|
+  +author: ?{|
     +id: ?string,
     +name: ?string,
     +alias: $ReadOnlyArray<string>,
+    +thumbnail: ?string,
     +texts: $ReadOnlyArray<{|
       +id: string,
       +title: ?string,
     |}>,
-  |}>
+  |}
 |};
-export type GetAuthorsQuery = {|
-  variables: GetAuthorsQueryVariables,
-  response: GetAuthorsQueryResponse,
+export type GetAuthorQuery = {|
+  variables: GetAuthorQueryVariables,
+  response: GetAuthorQueryResponse,
 |};
 */
 
 
 /*
-query GetAuthorsQuery {
-  authors {
+query GetAuthorQuery(
+  $id: ID!
+) {
+  author(id: $id) {
     id
     name
     alias
+    thumbnail
     texts {
       id
       title
@@ -43,24 +49,38 @@ query GetAuthorsQuery {
 */
 
 const node/*: ConcreteRequest*/ = (function(){
-var v0 = {
+var v0 = [
+  {
+    "kind": "LocalArgument",
+    "name": "id",
+    "type": "ID!",
+    "defaultValue": null
+  }
+],
+v1 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "id",
   "args": null,
   "storageKey": null
 },
-v1 = [
+v2 = [
   {
     "kind": "LinkedField",
     "alias": null,
-    "name": "authors",
+    "name": "author",
     "storageKey": null,
-    "args": null,
+    "args": [
+      {
+        "kind": "Variable",
+        "name": "id",
+        "variableName": "id"
+      }
+    ],
     "concreteType": "Author",
-    "plural": true,
+    "plural": false,
     "selections": [
-      (v0/*: any*/),
+      (v1/*: any*/),
       {
         "kind": "ScalarField",
         "alias": null,
@@ -76,6 +96,13 @@ v1 = [
         "storageKey": null
       },
       {
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "thumbnail",
+        "args": null,
+        "storageKey": null
+      },
+      {
         "kind": "LinkedField",
         "alias": null,
         "name": "texts",
@@ -84,7 +111,7 @@ v1 = [
         "concreteType": "Text",
         "plural": true,
         "selections": [
-          (v0/*: any*/),
+          (v1/*: any*/),
           {
             "kind": "ScalarField",
             "alias": null,
@@ -101,27 +128,27 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "GetAuthorsQuery",
+    "name": "GetAuthorQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": [],
-    "selections": (v1/*: any*/)
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": (v2/*: any*/)
   },
   "operation": {
     "kind": "Operation",
-    "name": "GetAuthorsQuery",
-    "argumentDefinitions": [],
-    "selections": (v1/*: any*/)
+    "name": "GetAuthorQuery",
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": (v2/*: any*/)
   },
   "params": {
     "operationKind": "query",
-    "name": "GetAuthorsQuery",
+    "name": "GetAuthorQuery",
     "id": null,
-    "text": "query GetAuthorsQuery {\n  authors {\n    id\n    name\n    alias\n    texts {\n      id\n      title\n    }\n  }\n}\n",
+    "text": "query GetAuthorQuery(\n  $id: ID!\n) {\n  author(id: $id) {\n    id\n    name\n    alias\n    thumbnail\n    texts {\n      id\n      title\n    }\n  }\n}\n",
     "metadata": {}
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = 'cbeea26ed75b408949490c4cefb81433';
+(node/*: any*/).hash = '08a35c2c4b94c662ea4f4b1c9304f86a';
 module.exports = node;

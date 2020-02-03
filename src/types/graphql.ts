@@ -143,6 +143,7 @@ export type Text = {
   xid?: Maybe<Scalars['ID']>,
   source?: Maybe<DataSource>,
   url?: Maybe<Scalars['String']>,
+  content?: Maybe<Scalars['String']>,
   title?: Maybe<Scalars['String']>,
   authors?: Maybe<Array<Author>>,
   subject?: Maybe<Array<Scalars['String']>>,
