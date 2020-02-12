@@ -1,12 +1,11 @@
-import graphql from 'babel-plugin-relay/macro';
+import gql from 'graphql-tag';
 
-export const GET_TEXT = graphql`
+export const GET_TEXT = gql`
   query GetTextQuery($id: ID!) {
     text(id: $id) {
       id
       title
       url
-      content
       authors {
         id
         name

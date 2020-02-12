@@ -1,5 +1,5 @@
 import React from 'react';
-import { preloadQuery, useRelayEnvironment, usePreloadedQuery } from 'react-relay/hooks';
+import { useQuery } from '@apollo/react-hooks';
 import { useParams } from 'react-router-dom';
 import { GET_TEXT } from './GetText.queries';
 import { Text as TextInterface } from '../../types';
@@ -8,17 +8,30 @@ interface TextRouteParam {
   id: string;
 }
 
+interface TextResponse {
+  text: TextInterface;
+}
+
 export function Text() {
   const params = useParams<TextRouteParam>();
-  const environment = useRelayEnvironment();
-  const preloadedQuery = preloadQuery(environment, GET_TEXT, {
-    id: params.id,
+  const { data, loading } = useQuery<TextResponse>(GET_TEXT, {
+    variables: {
+      id: params.id,
+    },
   });
-  const data: { text: TextInterface } = usePreloadedQuery(GET_TEXT, preloadedQuery) as any;
-  return (
+  return loading ? (
+    <>Loading...</>
+  ) : (
     <div>
-      <h1>{data.text.title}</h1>
-      {data.text.content}
+      <h1>{data!.text.title}</h1>
+      <p>Links:</p>
+      <ul>
+        <li>
+          <a href={data!.text.url!} target="_blank" rel="noopener noreferrer">
+            {data!.text.url}
+          </a>
+        </li>
+      </ul>
     </div>
   );
 }

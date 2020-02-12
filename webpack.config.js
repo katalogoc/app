@@ -118,11 +118,9 @@ module.exports = (env = defaultEnv) => {
           type: 'javascript/auto',
         },
         {
-          test: /\.(js|jsx|mjs|ts|tsx)$/,
-          exclude: /(node_modules|bower_components)/,
-          use: {
-            loader: 'babel-loader'
-          },
+          test: /\.tsx?$/,
+          use: 'ts-loader',
+          exclude: /node_modules/,
         },
         {
           test: /\.css$/,

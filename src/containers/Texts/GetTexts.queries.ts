@@ -1,6 +1,6 @@
-import graphql from 'babel-plugin-relay/macro';
+import gql from 'graphql-tag';
 
-export const GET_TEXTS = graphql`
+export const GET_TEXTS = gql`
   query GetTextsQuery {
     texts {
       id

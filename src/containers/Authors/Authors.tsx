@@ -1,13 +1,9 @@
 import React from 'react';
-import { preloadQuery, useRelayEnvironment, usePreloadedQuery } from 'react-relay/hooks';
+import { useQuery } from '@apollo/react-hooks';
 import { GET_AUTHORS } from './GetAuthors.queries';
-import { Author } from '../../types';
-import  { AuthorCards } from '../../components/AuthorCards';
+import { AuthorCards } from '../../components/AuthorCards';
 
 export function Authors() {
-  const environment = useRelayEnvironment();
-  const preloadedQuery = preloadQuery(environment, GET_AUTHORS, {});
-  
-  const data: { authors: Author[] } = usePreloadedQuery(GET_AUTHORS, preloadedQuery) as any;
-  return <AuthorCards authors={data.authors} />;
-};
+  const { data, loading } = useQuery(GET_AUTHORS);
+  return loading ? <>Loading...</> : <AuthorCards authors={data!.authors} />;
+}

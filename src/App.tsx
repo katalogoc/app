@@ -9,7 +9,7 @@ const isLoggedIn = true;
 
 interface AppProps {}
 
-function App({}: AppProps) {
+function App() {
   if (!isLoggedIn) {
     return <Login />;
   }

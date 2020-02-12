@@ -1,6 +1,6 @@
-import graphql from 'babel-plugin-relay/macro';
+import gql from 'graphql-tag';
 
-export const GET_AUTHORS = graphql`
+export const GET_AUTHORS = gql`
   query GetAuthorsQuery {
     authors {
       id
