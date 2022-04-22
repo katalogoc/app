@@ -13,7 +13,7 @@
     "graphql-tag": "^2.10.3",
     "history": "^4.7.2",
     "material-ui": "^0.20.2",
-    "nconf": "^0.10.0",
+    "nconf": "^0.11.4",
     "react": "0.0.0-experimental-f42431abe",
     "react-dom": "0.0.0-experimental-f42431abe",
     "react-hot-loader": "^4.6.3",
